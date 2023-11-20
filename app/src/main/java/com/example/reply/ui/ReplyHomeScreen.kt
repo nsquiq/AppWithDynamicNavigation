@@ -92,7 +92,7 @@ fun ReplyHomeScreen(
         )
     )
     if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
-        && replyUiState.isShowingHomepage
+
     ) {
         PermanentNavigationDrawer(
             drawerContent = {
@@ -134,6 +134,7 @@ fun ReplyHomeScreen(
         } else {
             ReplyDetailsScreen(
                 replyUiState = replyUiState,
+                isFullScreen = true,
                 onBackPressed = onDetailScreenBackPressed,
                 modifier = modifier
             )
@@ -171,6 +172,37 @@ private fun ReplyAppContent(
     navigationItemContentList: List<NavigationItemContent>,
     modifier: Modifier = Modifier,
 ) {
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.inverseOnSurface)
+    ) {
+        if (contentType == ReplyContentType.LIST_AND_DETAIL) {
+            ReplyListAndDetailContent(
+                replyUiState = replyUiState,
+                onEmailCardPressed = onEmailCardPressed,
+                modifier = Modifier.weight(1f)
+            )
+        } else {
+            ReplyListOnlyContent(
+                replyUiState = replyUiState,
+                onEmailCardPressed = onEmailCardPressed,
+                modifier = Modifier.weight(1f)
+                    .padding(
+                        horizontal = dimensionResource(R.dimen.email_list_only_horizontal_padding)
+                    )
+            )
+        }
+        AnimatedVisibility(visible = navigationType == ReplyNavigationType.BOTTOM_NAVIGATION) {
+            ReplyBottomNavigationBar(
+                currentTab = replyUiState.currentMailbox,
+                onTabPressed = onTabPressed,
+                navigationItemContentList = navigationItemContentList
+            )
+        }
+    }
+
     Row(modifier = modifier) {
         AnimatedVisibility(visible = navigationType == ReplyNavigationType.NAVIGATION_RAIL) {
         val navigationRailContentDescription = stringResource(R.string.navigation_rail)
