@@ -24,6 +24,21 @@ class ReplyAppTest {
         ).assertExists()
     }
     @Test
+    @TestAnnotaions.TestMediumWidth
+    fun mediumDevice_verifyUsingNavigationRail() {
+        // Set up medium window
+        composeTestRule.setContent {
+            ReplyApp(
+                windowSize = WindowWidthSizeClass.Medium
+            )
+        }
+        // Navigation rail is displayed
+        composeTestRule.onNodeWithTagForStringId(
+            R.string.navigation_rail
+        ).assertExists()
+    }
+    @Test
+    @TestAnnotaions.TestExpandedWidth
     fun expandedDevice_verifyUsingNavigationDrawer() {
         composeTestRule.setContent {
             ReplyApp(
